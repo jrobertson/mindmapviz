@@ -2,34 +2,8 @@
 
 # file: mindmapviz.rb
 
-require 'requestor'
+require 'pxgraphviz'
 
-code = Requestor.read('http://rorbuilder.info/r/ruby') do |x|
-  x.require 'pxgraphviz'
-end
-
-eval code
-
-=begin
-notes:
-
-coloured box for central point
-box for nodes
-text for leaves
-
-or
-ellipse for central point
-text for nodes and leaves 
-
-or
-
-coloure dellipse for central point 
-text for nodes and leaves
-  - larger text and thicker connections for more important things 
-coloured branches for different nodes
-
-For text only use shape: 'none'
-=end
 
 # inspired by https://github.com/bingwei/ruby-graphviz-mindmap
 
