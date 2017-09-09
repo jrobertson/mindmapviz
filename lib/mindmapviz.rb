@@ -73,17 +73,16 @@ EOF
     @pxg.to_dot
   end
 
-  # writes to a PNG file (not a PNG blob)
+  # returns a PNG blob
   #
-  def to_png(filename)    
-    @pxg.to_png filename
+  def to_png()    
+    @pxg.to_png
   end
   
-  # writes to a SVG file (not an SVG blob)
+  # returns an SVG blob
   #
-  def to_svg(filename)
-    @pxg.to_svg filename
-    'SVG file written'
+  def to_svg()
+    @pxg.to_svg
   end    
   
   def write(filename)
