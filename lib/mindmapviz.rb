@@ -13,12 +13,39 @@ class Mindmapviz
   attr_reader :raw_doc
   
   def initialize(s, fields: %w(label shape), delimiter: ' # ', 
-                 style: default_stylesheet())
+                 style: default_stylesheet())    
+
+    if s =~ /<?mindmapviz / then
+      
+      raw_mm = s.clone
+      s2 = raw_mm.slice!(/<\?mindmapviz [^>]+\?>/)
+
+      attributes = %w(root fields delimiter id).inject({}) do |r, keyword|
+        found = s2[/(?<=#{keyword}=['"])[^'"]+/]
+        found ? r.merge(keyword.to_sym => found) : r
+      end
+      
+      h = {
+        fields: fields.join(', '), 
+        delimiter: delimiter
+      }.merge attributes          
+
+      s = if h[:root] then
+        "\n\n" + h[:root] + "\n" + 
+          raw_mm.strip.lines.map {|line| '  ' + line}.join
+      else
+        raw_mm
+      end
+      
+      delimiter = h[:delimiter]
+      fields = h[:fields].split(/ *, */)
+
+    end
     
-
-
-@raw_doc=<<EOF
-<?polyrex schema='items[type, layout]/item[#{fields.join(', ')}]' delimiter='#{delimiter}'?>
+schema = "items[type, layout]/item[%s]" % fields.join(', ')
+    
+@raw_doc =<<EOF
+<?polyrex schema='#{schema}' delimiter='#{delimiter}'?>
 type: graph
 layout: neato
 #{s}
@@ -26,6 +53,10 @@ EOF
 
     @pxg = PxGraphViz.new(@raw_doc, style: style)
  
+  end
+  
+  def doc()
+    @pxg.doc
   end
   
   def export(file='gvml.xml')
@@ -54,6 +85,10 @@ EOF
     @pxg.to_svg filename
     'SVG file written'
   end    
+  
+  def write(filename)
+    @pxg.write filename
+  end
     
   
   private
@@ -70,6 +105,11 @@ EOF
     margin: 0.0;
     penwidth: 1; 
     style: filled;
+  }
+  
+  a node {
+    color: #0011ee;   
+    penwidth: 1;
   }
 
   edge {
