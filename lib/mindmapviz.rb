@@ -10,7 +10,7 @@ require 'pxgraphviz'
 
 class Mindmapviz
   
-  attr_reader :raw_doc
+  attr_reader :raw_doc, :pxg
   
   def initialize(s, fields: %w(label shape), delimiter: ' # ', 
                  style: default_stylesheet())    
@@ -99,7 +99,7 @@ EOF
     color: #ddaa66; 
     fillcolor: #ccffcc;
     fontcolor: #330055; 
-    fontname: Trebuchet MS; 
+    fontname: 'Trebuchet MS'; 
     fontsize: 8; 
     margin: 0.0;
     penwidth: 1; 
