@@ -1,9 +1,9 @@
 # Introducing the Mindmapviz gem
 
     require 'mindmapviz'
-
+    
     s = "
-    home # ellipse
+    home # box
       employment
       socialising
       learning
@@ -11,14 +11,7 @@
     "
 
     mmv = Mindmapviz.new s, fields: %w(label shape),delimiter: ' # '
-    mmv.to_png 'mindmap.png'
+    mmv.write '/tmp/mindmap.svg'
 
-Output
 
-![](http://www.jamesrobertson.eu/r/images/2017/sep/04/mindmap.png)
-
-## Resources
-
-* mindmapviz https://rubygems.org/gems/mindmapviz
-
-mindmapviz mindmap gem graphviz
+see http://www.jamesrobertson.eu/snippets/2017/sep/04/introducing-the-mindmapviz-gem.html
