@@ -8,9 +8,8 @@ require 'pxgraphviz'
 # inspired by https://github.com/bingwei/ruby-graphviz-mindmap
 
 
-class Mindmapviz
+class Mindmapviz < PxGraphViz
   
-  attr_reader :raw_doc, :pxg
   
   def initialize(s, fields: %w(label shape), delimiter: ' # ', 
                  style: default_stylesheet())    
@@ -44,51 +43,17 @@ class Mindmapviz
     
 schema = "items[type, layout]/item[%s]" % fields.join(', ')
     
-@raw_doc =<<EOF
+raw_doc =<<EOF
 <?polyrex schema='#{schema}' delimiter='#{delimiter}'?>
 type: graph
 layout: neato
 #{s}
 EOF
 
-    @pxg = PxGraphViz.new(@raw_doc, style: style)
+    super(raw_doc, style: style)
  
   end
   
-  def doc()
-    @pxg.doc
-  end
-  
-  def export(file='gvml.xml')
-    File.write file, @pxg.to_doc.xml(pretty: true)    
-  end
-  
-  alias export_as export
-  
-  def save(s)
-    File.write filename, @raw_doc
-  end
-  
-  def to_dot()
-    @pxg.to_dot
-  end
-
-  # returns a PNG blob
-  #
-  def to_png()    
-    @pxg.to_png
-  end
-  
-  # returns an SVG blob
-  #
-  def to_svg()
-    @pxg.to_svg
-  end    
-  
-  def write(filename)
-    @pxg.write filename
-  end
-    
   
   private
 
@@ -117,7 +82,7 @@ EOF
     fontcolor: #444444; 
     fontname: Verdana; 
     fontsize: 8; 
-    #{@type == :digraph ? 'dir: forward;' : 'dir: none;'}
+    dir: none;
     weight: 1;
   }
 STYLE
