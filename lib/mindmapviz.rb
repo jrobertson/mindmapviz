@@ -2,6 +2,7 @@
 
 # file: mindmapviz.rb
 
+require 'shellwords'
 require 'pxgraphviz'
 
 
@@ -9,20 +10,22 @@ require 'pxgraphviz'
 
 
 class Mindmapviz < PxGraphViz
+  using ColouredText
   
   
   def initialize(s, fields: %w(label shape), delimiter: ' # ', 
-                 style: default_stylesheet())    
+                 style: default_stylesheet(), debug: false)
+    
+    @debug = debug
 
     if s =~ /<?mindmapviz / then
       
       raw_mm = s.clone
       s2 = raw_mm.slice!(/<\?mindmapviz [^>]+\?>/)
 
-      attributes = %w(root fields delimiter id).inject({}) do |r, keyword|
-        found = s2[/(?<=#{keyword}=['"])[^'"]+/]
-        found ? r.merge(keyword.to_sym => found) : r
-      end
+      # attributes being sought =>  root fields delimiter id
+      attributes = Shellwords::shellwords(s).map {|x| key, 
+                         value = x.split(/=/, 2); [key.to_sym, value]}.to_h
       
       h = {
         fields: fields.join(', '), 
@@ -49,6 +52,8 @@ type: graph
 layout: neato
 #{s}
 EOF
+
+puts ('s: ' + s.inspect).debug if @debug
 
     super(raw_doc, style: style)
  
