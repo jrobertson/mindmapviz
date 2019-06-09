@@ -14,9 +14,9 @@ class Mindmapviz < PxGraphViz
   
   
   def initialize(s, fields: %w(label shape), delimiter: ' # ', 
-                 style: default_stylesheet(), debug: false)
+                 style: nil, debug: false, fill: '#ccffcc', 
+                 stroke: '#999999', text_color: '#330055'))
     
-    @debug = debug
 
     if s =~ /<?mindmapviz / then
       
@@ -53,9 +53,18 @@ layout: neato
 #{s}
 EOF
 
-puts ('s: ' + s.inspect).debug if @debug
+    puts ('mindmapviz s: ' + s.inspect).debug if debug
 
-    super(raw_doc, style: style)
+    style ||= default_stylesheet()
+
+    super(raw_doc, style: style: debug: debug, fill: fill, 
+                 stroke: stroke, text_color: text_color)
+    @css = "
+      .node ellipse {stroke: #{stroke}; fill: #{fill}}
+      .node text {fill: #{text_color}}
+      .edge path {stroke: #{stroke}}
+      .edge polygon {stroke: #{stroke}; fill: #{stroke}}
+    "
  
   end
   
