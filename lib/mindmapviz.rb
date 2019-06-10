@@ -9,6 +9,30 @@ require 'pxgraphviz'
 # inspired by https://github.com/bingwei/ruby-graphviz-mindmap
 
 
+=begin
+notes:
+
+coloured box for central point
+box for nodes
+text for leaves
+
+or
+ellipse for central point
+text for nodes and leaves 
+
+or
+
+coloure dellipse for central point 
+text for nodes and leaves
+  - larger text and thicker connections for more important things 
+coloured branches for different nodes
+
+For text only use shape: 'none'
+=end
+
+# inspired by https://github.com/bingwei/ruby-graphviz-mindmap
+
+
 class Mindmapviz < PxGraphViz
   using ColouredText
   
@@ -57,8 +81,8 @@ EOF
 
     style ||= default_stylesheet()
 
-    super(raw_doc, style: style: debug: debug, fill: fill, 
-                 stroke: stroke, text_color: text_color)
+    super(raw_doc, style: style, debug: debug, fill: fill, 
+          stroke: stroke, text_color: text_color)
     @css = "
       .node ellipse {stroke: #{stroke}; fill: #{fill}}
       .node text {fill: #{text_color}}
@@ -76,8 +100,8 @@ EOF
 <<STYLE
   node { 
     color: #ddaa66; 
-    fillcolor: #ccffcc;
-    fontcolor: #330055; 
+    fillcolor: #{@fill};
+    fontcolor: #{@text_color}; 
     fontname: 'Trebuchet MS'; 
     fontsize: 8; 
     margin: 0.0;
@@ -92,7 +116,7 @@ EOF
 
   edge {
     arrowsize: 0.5;
-    color: #999999; 
+    color: #{@stroke}; 
     fontcolor: #444444; 
     fontname: Verdana; 
     fontsize: 8; 
