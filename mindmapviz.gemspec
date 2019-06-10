@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name = 'mindmapviz'
-  s.version = '0.3.0'
+  s.version = '0.3.1'
   s.summary = 'Uses Graphviz to make a mindmap.'
   s.authors = ['James Robertson']
   s.files = Dir['lib/mindmapviz.rb']

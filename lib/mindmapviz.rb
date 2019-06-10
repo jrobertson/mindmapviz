@@ -15,7 +15,7 @@ class Mindmapviz < PxGraphViz
   
   def initialize(s, fields: %w(label shape), delimiter: ' # ', 
                  style: nil, debug: false, fill: '#ccffcc', 
-                 stroke: '#999999', text_color: '#330055'))
+                 stroke: '#999999', text_color: '#330055')
     
 
     if s =~ /<?mindmapviz / then
